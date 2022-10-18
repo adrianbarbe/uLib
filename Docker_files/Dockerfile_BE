@@ -1,0 +1,32 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+WORKDIR /app
+ARG ASPNETCORE_ENVIRONMENT=Production
+ARG BUILD_NUMBER=local
+
+COPY ./RemoteFinder.BLL ./RemoteFinder.BLL
+COPY ./RemoteFinder.DAL ./RemoteFinder.DAL
+COPY ./RemoteFinder.Entities ./RemoteFinder.Entities
+COPY ./RemoteFinder.Models ./RemoteFinder.Models
+COPY ./RemoteFinder.Web ./RemoteFinder.Web
+COPY ./RemoteFinder.sln ./
+
+WORKDIR /app/RemoteFinder.Web
+
+RUN dotnet restore
+
+RUN dotnet publish -c Release -o out /p:Version="1.0.0-$BUILD_NUMBER"
+
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
+
+WORKDIR /app
+
+COPY --from=build-env /app/RemoteFinder.Web/out ./
+
+ENV ASPNETCORE_ENVIRONMENT=$ASPNETCORE_ENVIRONMENT
+ENV ASPNETCORE_URLS=http://*:5000
+
+RUN echo $ASPNETCORE_ENVIRONMENT
+RUN echo $ASPNETCORE_URLS
+
+ENTRYPOINT ["dotnet", "RemoteFinder.Web.Web.dll"]
