@@ -1,9 +1,40 @@
+using Microsoft.EntityFrameworkCore;
+using RemoteFinder.BLL.Mappers;
+using RemoteFinder.BLL.Mappers.Storage;
+using RemoteFinder.BLL.Services.FileService;
+using RemoteFinder.DAL;
+using RemoteFinder.Entities.Storage;
+using File = RemoteFinder.Models.File;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", false, true)
+    .AddEnvironmentVariables();
+
+builder.Services.AddDbContext<MainContext>(options =>
+    {
+        var connectionString = Environment.GetEnvironmentVariable("DbConnectionString") ?? "";
+
+        if (connectionString == string.Empty)
+        {
+            throw new Exception("No DbConnectionString ENV available");
+        }
+
+        options.UseNpgsql(connectionString);
+}
+);
+
+// Mappers
+builder.Services.AddSingleton<IMapper<FileEntity, File>, FileMapper>();
+
+// Services
+builder.Services.AddScoped<IFileService, FileService>();
+
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -15,8 +46,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
