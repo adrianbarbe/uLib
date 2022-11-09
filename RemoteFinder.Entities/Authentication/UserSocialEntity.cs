@@ -6,17 +6,6 @@ namespace RemoteFinder.Entities.Authentication;
 
 public class UserSocialEntity
 {
-    public UserSocialEntity(string username, string? firstName, string? lastName, string email, string userPicture, string providerUserId, OAuthProviderTypes oAuthProvider)
-    {
-        Username = username;
-        FirstName = firstName;
-        LastName = lastName;
-        Email = email;
-        UserPicture = userPicture;
-        ProviderUserId = providerUserId;
-        OAuthProvider = oAuthProvider;
-    }
-
     public int Id { get; set; }
     public string Username { get; set; }
     public string? FirstName { get; set; }

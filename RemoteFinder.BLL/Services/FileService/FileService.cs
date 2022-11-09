@@ -38,16 +38,8 @@ public class FileService : IFileService
     public File Create(File file)
     {
         var fileEntity = _fileMapper.Map(file);
-
-        var firstUserSocial = _context.UserSocial.FirstOrDefault();
-
-        if (firstUserSocial == null)
-        {
-            throw new Exception("Not found any user");
-        }
-
-        // Hardcoding the User id at this moment since we don't have authorization yet
-        fileEntity.UserSocialId = firstUserSocial.Id;
+        
+        fileEntity.UserSocialId = file.UserSocialId;
 
         fileEntity.CreatedAt = DateTime.UtcNow;
         

@@ -45,6 +45,15 @@
                         @Html.ValidationMessageFor(model => model.FileType)
                     </td>
                 </tr>
+                <tr>
+                    <td>User</td>
+                    <td>
+                        @Html.DropDownListFor(model => model.UserSocial, 
+                            new SelectList(@ViewBag.UserItems, "Value", "Text"),
+                                    "Select User")
+                        @Html.ValidationMessageFor(model => model.FileType)
+                    </td>
+                </tr>
                 </tbody>
             </table>
             
