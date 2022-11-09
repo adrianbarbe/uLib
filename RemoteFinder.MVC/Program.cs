@@ -1,9 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using RemoteFinder.BLL.Mappers;
+using RemoteFinder.BLL.Mappers.Authentication;
 using RemoteFinder.BLL.Mappers.Storage;
 using RemoteFinder.BLL.Services.FileService;
+using RemoteFinder.BLL.Services.UserSocialService;
 using RemoteFinder.DAL;
+using RemoteFinder.Entities.Authentication;
 using RemoteFinder.Entities.Storage;
+using RemoteFinder.Models;
 using File = RemoteFinder.Models.File;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,9 +32,11 @@ builder.Services.AddDbContext<MainContext>(options =>
 
 // Mappers
 builder.Services.AddSingleton<IMapper<FileEntity, File>, FileMapper>();
+builder.Services.AddSingleton<IMapper<UserSocialEntity, UserSocial>, UserSocialMapper>();
 
 // Services
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IUserSocialService, UserSocialService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

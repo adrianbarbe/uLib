@@ -4,6 +4,7 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RemoteFinder.BLL.Services.FileService;
+using RemoteFinder.BLL.Services.UserSocialService;
 using RemoteFinder.MVC.Models;
 using File = RemoteFinder.Models.File;
 
@@ -13,11 +14,13 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IFileService _fileService;
+    private readonly IUserSocialService _userSocialService;
 
-    public HomeController(ILogger<HomeController> logger, IFileService fileService)
+    public HomeController(ILogger<HomeController> logger, IFileService fileService, IUserSocialService userSocialService)
     {
         _logger = logger;
         _fileService = fileService;
+        _userSocialService = userSocialService;
     }
 
     public IActionResult Index()
@@ -34,6 +37,16 @@ public class HomeController : Controller
     
     public IActionResult Create()
     {
+        var users = _userSocialService.GetAll();
+
+        List<SelectListItem> userItems = users.Select(u => new SelectListItem
+        {
+            Value = u.Id.ToString(),
+            Text = $"{u.Username} - {u.FirstName} {u.LastName}"
+        }).ToList();
+
+        ViewBag.UserItems = userItems;
+        
         return View();
     }
     
@@ -42,8 +55,17 @@ public class HomeController : Controller
     {
         if (ModelState.IsValid)
         {
-            _fileService.Create(file);
-            
+            if (int.TryParse(file.UserSocial, out var userSocialId))
+            {
+                file.UserSocialId = userSocialId;
+                
+                _fileService.Create(file);
+            }
+            else
+            {
+                throw new Exception("Cannot parse the value");
+            }
+
             return RedirectToAction("Index");
         }
         
