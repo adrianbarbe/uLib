@@ -10,10 +10,9 @@ RUN yarn install
 COPY ./RemoteFinder.UI/ .
 COPY ./Docker_files/nginx/ .
 
-ENV CONFIG_MODE_ENV=$CONFIG_MODE_ENV
 ENV NODE_ENV=production
 
-RUN yarn build-$CONFIG_MODE_ENV
+RUN yarn build-production
 
 # production stage
 FROM nginx:stable-alpine as production-stage
