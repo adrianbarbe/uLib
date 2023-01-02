@@ -12,4 +12,9 @@
       <ProjectReference Include="..\RemoteFinder.Models\RemoteFinder.Models.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="RestSharp" Version="108.0.3" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+    </ItemGroup>
+
 </Project>

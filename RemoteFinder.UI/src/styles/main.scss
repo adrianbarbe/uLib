@@ -1,0 +1,65 @@
+#app {
+  height: 100vh;
+}
+
+.env-text-helper {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin-bottom: -13px;
+  font-size: 20px;
+  color: white;
+  text-shadow: 0.2px 0.5px 16px red;
+  margin-left: 10px;
+}
+
+.avatar-image {
+  width: 120px;
+  height: 40px;
+  display: inline-flex;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  margin-right: 10px;
+
+  &.avatar-image-env img {
+    opacity: 0.6;
+  }
+
+  & * {
+    display: inline-flex;
+    height: inherit;
+    width: inherit;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .avatar-image {
+    display: none !important;
+  }
+
+  .env-text-helper {
+    display: none !important;
+  }
+}
+
+
+table.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+  border-collapse: collapse !important;
+
+  th, td {
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+  }
+
+  thead th {
+    text-align: left;
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+  }
+}

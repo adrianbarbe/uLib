@@ -1,0 +1,47 @@
+version: "3.7"
+services:
+  admin_ui:
+    image: adryanbarbe/ulib-ui
+    networks:
+      - frontend
+    ports:
+      - "30080:80"
+    deploy:
+      replicas: 1
+      update_config:
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+  
+  admin_be:
+    image: adryanbarbe/ulib-api
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      DbConnectionString: ""
+      GoogleClientId: ""
+      GoogleClientSecret: ""
+      GoogleRedirectUri: ""
+    networks:
+      - backend
+    ports:
+      - "35000:5000"
+    deploy:
+      replicas: 1
+      update_config:
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+        
+networks:
+  frontend:
+  backend:
+  main:        
+        
