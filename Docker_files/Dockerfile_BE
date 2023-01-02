@@ -29,4 +29,4 @@ ENV ASPNETCORE_URLS=http://*:5000
 RUN echo $ASPNETCORE_ENVIRONMENT
 RUN echo $ASPNETCORE_URLS
 
-ENTRYPOINT ["dotnet", "RemoteFinder.Web.Web.dll"]
+ENTRYPOINT ["dotnet", "RemoteFinder.Web.dll"]
