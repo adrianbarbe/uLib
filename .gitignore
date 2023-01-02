@@ -256,3 +256,6 @@ yarn-error.log*
 *.njsproj
 
 dist
+.env
+appsettings.Development.json
+appsettings.Production.json
