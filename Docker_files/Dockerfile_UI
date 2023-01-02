@@ -8,7 +8,7 @@ COPY ./RemoteFinder.UI/package*.json ./
 RUN yarn install
 
 COPY ./RemoteFinder.UI/ .
-COPY ./nginx/ .
+COPY ./Docker_files/nginx/ .
 
 ENV CONFIG_MODE_ENV=$CONFIG_MODE_ENV
 ENV NODE_ENV=production
