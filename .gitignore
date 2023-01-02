@@ -259,3 +259,4 @@ dist
 appsettings.Development.json
 appsettings.Production.json
 /RemoteFinder.Web/appsettings.Development.json
+/RemoteFinder.Web/appsettings.Production.json
