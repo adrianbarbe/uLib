@@ -33,7 +33,7 @@ export default {
                 scope: 'email openid profile',
                 access_type: 'offline',
                 response_type: 'code',
-                redirect_uri: `${this.$config.apiEndpoint}/auth/redirect-sign-up`,
+                redirect_uri: `${this.$config.appEndpoint}/auth/redirect-sign-up`,
                 client_id: clientId,
             };
 
