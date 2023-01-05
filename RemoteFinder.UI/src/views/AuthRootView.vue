@@ -1,6 +1,5 @@
 <template>
     <v-app>
-        <vue-headful title="uLib"/>
         <v-container fluid class="fill-height">
             <div class="d-flex fill-height align-center justify-center flex-column">
                 <router-view/>

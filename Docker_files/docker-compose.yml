@@ -26,6 +26,7 @@ services:
       GoogleClientId: ""
       GoogleClientSecret: ""
       GoogleRedirectUri: ""
+      JwtSecretKey: ""
     networks:
       - backend
     ports:

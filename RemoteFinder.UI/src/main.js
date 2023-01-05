@@ -1,7 +1,8 @@
 import {createApp} from 'vue';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
-import router from './router';
+import routerInstance from './router';
 import store from './store';
+import AuthJwt from './plugins/auth-jwt';
 
 import './styles/main.scss';
 
@@ -14,8 +15,11 @@ import {loadFonts} from './plugins/webfontloader';
 
 loadFonts()
 
-createApp(App)
-    .use(ConfigFactory, config)
+const app = createApp(App);
+const router = routerInstance(app);
+
+app.use(ConfigFactory, config)
+    .use(AuthJwt)
     .use(vuetify)
     .use(router)
     .use(store)

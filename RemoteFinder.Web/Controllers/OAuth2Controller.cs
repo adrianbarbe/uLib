@@ -15,17 +15,10 @@ namespace RemoteFinder.Web.Controllers
         }
 
         [HttpPost]
-        [Route("authorize-sign-up")]
-        public AuthTokenResponse? AuthorizeCodeSignUp([FromBody] AuthCode authCode)
+        [Route("authorize")]
+        public AuthTokenResponse? AuthorizeCode([FromBody] AuthCode authCode)
         {
-            return _ioAuth2Service.AuthorizeCodeSignUp(authCode.Code);
-        }
-        
-        [HttpPost]
-        [Route("authorize-sign-in")]
-        public AuthTokenResponse? AuthorizeCodeSignIn([FromBody] AuthCode authCode)
-        {
-            return _ioAuth2Service.AuthorizeCodeSignIn(authCode.Code);
+            return _ioAuth2Service.AuthorizeCode(authCode.Code);
         }
     }
 }

@@ -14,8 +14,11 @@ export default {
         const code = queryParams.get('code');
         
         AxiosService.getInstance()
-            .post(`oauth2/authorize-sign-up`, {code: code})
+            .post(`oauth2/authorize`, {code: code})
             .then(res => {
+                this.$auth.login(res.id_token, res.refresh_token);
+
+                this.$router.push({name: 'dashboard'});
                 console.log(res);
             });
     }
