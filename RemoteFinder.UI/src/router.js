@@ -3,12 +3,15 @@ import UserRootView from "@/views/UserRootView";
 import NotFoundView from "@/views/NotFoundView";
 import SignUp from "@/components/auth/SignUp";
 import AuthRootView from "@/views/AuthRootView";
-import AuthRedirectSignUp from "@/components/auth/AuthRedirectSignUp";
+import AuthRedirect from "@/components/auth/AuthRedirect";
+import routeGuard from "@/routeGuards/routeGuard";
 
-const routes = [
-    { 
-        path: '/', 
-        component: UserRootView
+const createRoutes = (app) => [
+    {
+        path: '/',
+        name: "dashboard",
+        component: UserRootView,
+        beforeEnter: (to, from, next) => routeGuard(to, from, next)(app),
     },
     {
         path: '/auth',
@@ -20,19 +23,21 @@ const routes = [
                 component: SignUp,
             },
             {
-                path: "redirect-sign-up",
-                name: "redirect-sign-up",
-                component: AuthRedirectSignUp,
+                path: "redirect",
+                name: "redirect",
+                component: AuthRedirect,
             }
         ],
     },
-    { path: '/404', component: NotFoundView },
-    { path: '/:pathMatch(.*)*', redirect: '/404' },
+    {path: '/404', component: NotFoundView},
+    {path: '/:pathMatch(.*)*', redirect: '/404'},
 ]
 
-const router = createRouter({
-    history: createWebHistory(),
-    routes,
-});
+const router = (app) => {
+    return createRouter({
+        history: createWebHistory(),
+        routes: createRoutes(app)
+    });
+};
 
 export default router;

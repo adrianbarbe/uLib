@@ -7,11 +7,7 @@
                 <span class="ml-2">Sign Up by Google</span>
             </v-btn>
 
-            <div class="mt-10 mb-2">Or if you already have an account then</div>
-            <v-btn>
-                <img width="20" :src="require('../../assets/google.png')" />
-                <span class="ml-2">Sign In by Google</span>
-            </v-btn>
+            <div class="mt-10 mb-2">By signing up or signing in you're agree with our <a href="#">terms and conditions</a></div>
         </div>
     </v-card>
 </template>
@@ -33,7 +29,7 @@ export default {
                 scope: 'email openid profile',
                 access_type: 'offline',
                 response_type: 'code',
-                redirect_uri: `${this.$config.appEndpoint}/auth/redirect-sign-up`,
+                redirect_uri: `${this.$config.appEndpoint}/auth/redirect`,
                 client_id: clientId,
             };
 

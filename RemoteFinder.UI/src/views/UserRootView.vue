@@ -1,11 +1,10 @@
 <template>
     <v-app>
-        <vue-headful title="uLib"/>
         <toolbar
             @toggleDrawer="drawerApp = !drawerApp"
         />
         <v-main>
-            <router-view/>
+            <dashboard-list/>
         </v-main>
         <snack-displayer/>
     </v-app>
@@ -14,11 +13,13 @@
 <script>
 import Toolbar from "@/components/user/common/Toolbar";
 import SnackDisplayer from "@/components/common/SnackDisplayer";
+import DashboardList from "@/components/dashboard/DashboardList";
 
 export default {
     components: {
         toolbar: Toolbar,
         snackDisplayer: SnackDisplayer,
+        DashboardList,
     },
     data: () => ({
         drawerApp: true,

@@ -6,9 +6,9 @@
         :timeout=3000
     >
         {{ message }}
-        <v-btn dark text @click="$store.commit('snackMessages/update', { show: false })">
-            <v-icon>clear</v-icon>
-        </v-btn>
+        <template v-slot:actions>
+            <v-btn variant="text" @click="$store.commit('snackMessages/update', { show: false })">Close</v-btn>
+        </template>
     </v-snackbar>
 </template>
 <script>
