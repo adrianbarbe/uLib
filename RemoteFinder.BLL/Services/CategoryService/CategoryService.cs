@@ -1,6 +1,7 @@
 using RemoteFinder.BLL.Exceptions;
 using RemoteFinder.BLL.Extensions;
 using RemoteFinder.BLL.Mappers;
+using RemoteFinder.BLL.Services.AuthorizationService;
 using RemoteFinder.BLL.Validators;
 using RemoteFinder.DAL;
 using RemoteFinder.Entities.Storage;
@@ -12,23 +13,32 @@ public class CategoryService : ICategoryService
 {
     private readonly MainContext _mainContext;
     private readonly IMapper<CategoryEntity, Category> _mapperCategory;
+    private readonly IAuthorizationService _authorizationService;
 
-    public CategoryService(MainContext mainContext, IMapper<CategoryEntity, Category> mapperCategory)
+    public CategoryService(MainContext mainContext, 
+        IMapper<CategoryEntity, Category> mapperCategory,
+        IAuthorizationService authorizationService)
     {
         _mainContext = mainContext;
         _mapperCategory = mapperCategory;
+        _authorizationService = authorizationService;
     }
     
     public List<Category> GetAll()
     {
+        var currentUserId = _authorizationService.GetCurrentUserId();
+        
         return _mainContext.Category
+            .Where(c => c.UserSocialId == currentUserId)
             .Select(c => _mapperCategory.Map(c))
             .ToList();
     }
 
     public Category GetOne(int id)
     {
-        var categoryEntity = _mainContext.Category.FirstOrDefault(c => c.Id == id);
+        var currentUserId = _authorizationService.GetCurrentUserId();
+
+        var categoryEntity = _mainContext.Category.FirstOrDefault(c => c.Id == id && c.UserSocialId == currentUserId);
 
         if (categoryEntity == null)
         {
@@ -44,6 +54,8 @@ public class CategoryService : ICategoryService
         {
             throw new ValidationException("Category model cannot be empty");
         }
+        
+        var currentUserId = _authorizationService.GetCurrentUserId();
 
         var validator = new CategoryValidator();
         var validationResult = validator.Validate(category);
@@ -56,6 +68,8 @@ public class CategoryService : ICategoryService
         }
         
         var categoryEntity = _mapperCategory.Map(category);
+
+        categoryEntity.UserSocialId = currentUserId;
 
         _mainContext.Category.Add(categoryEntity);
         _mainContext.SaveChanges();
@@ -79,8 +93,10 @@ public class CategoryService : ICategoryService
 
             throw new ValidationFormException(validationErrors);
         }
+        
+        var currentUserId = _authorizationService.GetCurrentUserId();
 
-        var categoryEntity = _mainContext.Category.FirstOrDefault(c => c.Id == id);
+        var categoryEntity = _mainContext.Category.FirstOrDefault(c => c.Id == id && c.UserSocialId == currentUserId);
 
         if (categoryEntity == null)
         {
@@ -97,7 +113,8 @@ public class CategoryService : ICategoryService
     }
     public void Remove(int id)
     {
-        var categoryEntity = _mainContext.Category.FirstOrDefault(c => c.Id == id);
+        var currentUserId = _authorizationService.GetCurrentUserId();
+        var categoryEntity = _mainContext.Category.FirstOrDefault(c => c.Id == id && c.UserSocialId == currentUserId);
 
         if (categoryEntity == null)
         {

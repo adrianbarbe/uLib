@@ -1,6 +1,7 @@
 using RemoteFinder.BLL.Exceptions;
 using RemoteFinder.BLL.Extensions;
 using RemoteFinder.BLL.Mappers;
+using RemoteFinder.BLL.Services.AuthorizationService;
 using RemoteFinder.BLL.Validators;
 using RemoteFinder.DAL;
 using RemoteFinder.Entities.Storage;
@@ -12,23 +13,32 @@ public class BookService : IBookService
 {
     private readonly MainContext _mainContext;
     private readonly IMapper<BookEntity, BookBase> _mapperBook;
+    private readonly IAuthorizationService _authorizationService;
 
-    public BookService(MainContext mainContext, IMapper<BookEntity, BookBase> mapperBook)
+    public BookService(MainContext mainContext, 
+        IMapper<BookEntity, BookBase> mapperBook,
+        IAuthorizationService authorizationService)
     {
         _mainContext = mainContext;
         _mapperBook = mapperBook;
+        _authorizationService = authorizationService;
     }
     
     public List<BookBase> GetAll()
     {
+        var currentUserId = _authorizationService.GetCurrentUserId();
+
         return _mainContext.Book
+            .Where(b => b.UserSocialId == currentUserId)
             .Select(b => _mapperBook.Map(b))
             .ToList();
     }
 
     public BookBase GetOne(int id)
     {
-        var bookEntity = _mainContext.Book.FirstOrDefault(c => c.Id == id);
+        var currentUserId = _authorizationService.GetCurrentUserId();
+
+        var bookEntity = _mainContext.Book.FirstOrDefault(c => c.Id == id && c.UserSocialId == currentUserId);
 
         if (bookEntity == null)
         {
@@ -44,6 +54,8 @@ public class BookService : IBookService
         {
             throw new ValidationException("Book model cannot be empty");
         }
+        
+        var currentUserId = _authorizationService.GetCurrentUserId();
 
         var validator = new BookBaseValidator();
         var validationResult = validator.Validate(book);
@@ -56,6 +68,8 @@ public class BookService : IBookService
         }
         
         var bookEntity = _mapperBook.Map(book);
+
+        bookEntity.UserSocialId = currentUserId;
 
         _mainContext.Book.Add(bookEntity);
         _mainContext.SaveChanges();
@@ -80,7 +94,9 @@ public class BookService : IBookService
             throw new ValidationFormException(validationErrors);
         }
 
-        var bookEntity = _mainContext.Book.FirstOrDefault(c => c.Id == id);
+        var currentUserId = _authorizationService.GetCurrentUserId();
+
+        var bookEntity = _mainContext.Book.FirstOrDefault(c => c.Id == id && c.UserSocialId == currentUserId);
 
         if (bookEntity == null)
         {
@@ -99,7 +115,9 @@ public class BookService : IBookService
 
     public void Remove(int id)
     {
-        var bookEntity = _mainContext.Book.FirstOrDefault(c => c.Id == id);
+        var currentUserId = _authorizationService.GetCurrentUserId();
+
+        var bookEntity = _mainContext.Book.FirstOrDefault(c => c.Id == id && c.UserSocialId == currentUserId);
 
         if (bookEntity == null)
         {
