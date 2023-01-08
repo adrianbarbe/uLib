@@ -16,6 +16,7 @@
       <PackageReference Include="AWSSDK.S3" Version="3.7.101.48" />
       <PackageReference Include="FluentValidation" Version="11.4.0" />
       <PackageReference Include="JWT" Version="9.0.3" />
+      <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
       <PackageReference Include="MimeTypes" Version="2.4.0">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -23,11 +24,4 @@
       <PackageReference Include="RestSharp" Version="108.0.3" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
-        <HintPath>..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\6.0.4\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
 </Project>

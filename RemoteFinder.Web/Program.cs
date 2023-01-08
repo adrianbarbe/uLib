@@ -115,6 +115,8 @@ builder.Services.AddSingleton<IMapper<CategoryEntity, Category>, CategoryMapper>
 builder.Services.AddSingleton<IMapper<BookEntity, BookBase>, BookMapper>();
 
 // Services
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IAuthorizationDAHelper, AuthorizationDAHelper>();
 builder.Services.AddScoped<IFileService, FileService>();
