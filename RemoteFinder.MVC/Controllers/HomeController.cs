@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RemoteFinder.BLL.Services.FileService;
 using RemoteFinder.BLL.Services.UserSocialService;
+using RemoteFinder.Models;
 using RemoteFinder.MVC.Models;
-using File = RemoteFinder.Models.File;
 
 namespace RemoteFinder.MVC.Controllers;
 
@@ -51,15 +51,15 @@ public class HomeController : Controller
     }
     
     [HttpPost, ActionName("Create")]
-    public IActionResult Create([FromForm] File file)
+    public IActionResult Create([FromForm] FileStorage fileStorage)
     {
         if (ModelState.IsValid)
         {
-            if (int.TryParse(file.UserSocial, out var userSocialId))
+            if (int.TryParse(fileStorage.UserSocial, out var userSocialId))
             {
-                file.UserSocialId = userSocialId;
+                fileStorage.UserSocialId = userSocialId;
                 
-                _fileService.Create(file);
+                _fileService.Create(fileStorage);
             }
             else
             {
@@ -69,7 +69,7 @@ public class HomeController : Controller
             return RedirectToAction("Index");
         }
         
-        return View(file);
+        return View(fileStorage);
     }
     public IActionResult Edit(int id)
     {
@@ -84,7 +84,7 @@ public class HomeController : Controller
     }
     
     [HttpPost, ActionName("Edit")]
-    public IActionResult EditSave(int id, [FromForm] File file)
+    public IActionResult EditSave(int id, [FromForm] FileStorage fileStorage)
     {
         if (id == null)
         {
@@ -93,12 +93,12 @@ public class HomeController : Controller
         
         if (ModelState.IsValid)
         {
-            _fileService.Update(id, file);
+            _fileService.Update(id, fileStorage);
             
             return RedirectToAction("Index");
         }
 
-        return View(file);
+        return View(fileStorage);
     }
 
     

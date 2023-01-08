@@ -1,17 +1,15 @@
 using RemoteFinder.Entities.Storage;
 using RemoteFinder.Models;
-using File = RemoteFinder.Models.File;
 
 namespace RemoteFinder.BLL.Mappers.Storage;
 
-public class FileMapper : IMapper<FileEntity, File>
+public class FileMapper : IMapper<FileEntity, FileStorage>
 {
-    public FileEntity Map(File source)
+    public FileEntity Map(FileStorage source)
     {
         return new FileEntity
         {
             Id = source.Id,
-            Name = source.Name,
             FileName = source.FileName,
             FileSize = source.FileSize,
             FileType = source.FileType,
@@ -19,12 +17,11 @@ public class FileMapper : IMapper<FileEntity, File>
         };
     }
 
-    public File Map(FileEntity source)
+    public FileStorage Map(FileEntity source)
     {
-        return new File
+        return new FileStorage
         {
             Id = source.Id,
-            Name = source.Name,
             FileName = source.FileName,
             FileSize = source.FileSize,
             FileType = source.FileType,

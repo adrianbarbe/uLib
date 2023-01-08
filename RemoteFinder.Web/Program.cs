@@ -1,19 +1,25 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using RemoteFinder.BLL.Mappers;
 using RemoteFinder.BLL.Mappers.Storage;
+using RemoteFinder.BLL.Services.AuthorizationService;
 using RemoteFinder.BLL.Services.AwsMinioClient;
+using RemoteFinder.BLL.Services.BookService;
+using RemoteFinder.BLL.Services.CategoryService;
 using RemoteFinder.BLL.Services.FileService;
 using RemoteFinder.BLL.Services.OAuth2Service;
+using RemoteFinder.BLL.Validators;
 using RemoteFinder.DAL;
+using RemoteFinder.DAL.Helpers;
 using RemoteFinder.Entities.Storage;
+using RemoteFinder.Models;
 using RemoteFinder.Models.Configuration;
 using UMSA.StepTest.BLL.Configuration;
-using File = RemoteFinder.Models.File;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -104,12 +110,23 @@ builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSet
 builder.Services.Configure<AwsMinioSettings>(builder.Configuration.GetSection("AwsMinioSettings"));
 
 // Mappers
-builder.Services.AddSingleton<IMapper<FileEntity, File>, FileMapper>();
+builder.Services.AddSingleton<IMapper<FileEntity, FileStorage>, FileMapper>();
+builder.Services.AddSingleton<IMapper<CategoryEntity, Category>, CategoryMapper>();
+builder.Services.AddSingleton<IMapper<BookEntity, BookBase>, BookMapper>();
 
 // Services
+builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
+builder.Services.AddScoped<IAuthorizationDAHelper, AuthorizationDAHelper>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IOAuth2Service, OAuth2Service>();
 builder.Services.AddScoped<IAwsMinioClient, AswMinioClient>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IBookService, BookService>();
+
+// Validators
+builder.Services.AddTransient<IValidator<Category>, CategoryValidator>();
+builder.Services.AddTransient<IValidator<BookBase>, BookBaseValidator>();
+builder.Services.AddTransient<IValidator<FileStorage>, FileValidator>();
 
 
 builder.Services.AddControllers();

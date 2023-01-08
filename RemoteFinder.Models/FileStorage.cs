@@ -1,6 +1,6 @@
 namespace RemoteFinder.Models;
 
-public class File
+public class FileStorage
 {
     public int Id { get; set; }
     public string Name { get; set; }
