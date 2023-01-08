@@ -1,31 +1,31 @@
 using RemoteFinder.BLL.Mappers;
+using RemoteFinder.BLL.Services.AuthorizationService;
 using RemoteFinder.DAL;
 using RemoteFinder.Entities.Storage;
-using File = RemoteFinder.Models.File;
+using RemoteFinder.Models;
 
 namespace RemoteFinder.BLL.Services.FileService;
 
 public class FileService : IFileService
 {
     private readonly MainContext _context;
-    private readonly IMapper<FileEntity, File> _fileMapper;
+    private readonly IMapper<FileEntity, FileStorage> _fileMapper;
+    private readonly IAuthorizationService _authorizationService;
 
-    public FileService(MainContext context, IMapper<FileEntity, File> fileMapper)
+    public FileService(MainContext context, 
+        IMapper<FileEntity, FileStorage> fileMapper,
+        IAuthorizationService authorizationService)
     {
         _context = context;
         _fileMapper = fileMapper;
-    }
-    
-    public List<File> GetAll()
-    {
-        return _context.File
-            .Select(file => _fileMapper.Map(file))
-            .ToList();
+        _authorizationService = authorizationService;
     }
 
-    public File Get(int id)
+    public FileStorage Get(int id)
     {
-        var fileEntity = _context.File.FirstOrDefault(f => f.Id == id);
+        var currentUserId = _authorizationService.GetCurrentUserId();
+
+        var fileEntity = _context.File.FirstOrDefault(f => f.Id == id && f.UserSocialId == currentUserId);
 
         if (fileEntity == null)
         {
@@ -35,43 +35,25 @@ public class FileService : IFileService
         return _fileMapper.Map(fileEntity);
     }
 
-    public File Create(File file)
+    public FileStorage Create(FileStorage fileStorage)
     {
-        var fileEntity = _fileMapper.Map(file);
+        var currentUserId = _authorizationService.GetCurrentUserId();
         
-        fileEntity.UserSocialId = file.UserSocialId;
+        var fileEntity = _fileMapper.Map(fileStorage);
+        
+        fileEntity.UserSocialId = currentUserId;
 
-        fileEntity.CreatedAt = DateTime.UtcNow;
-        
         _context.File.Add(fileEntity);
         _context.SaveChanges();
 
-        return file;
-    }
-
-    public File Update(int id, File file)
-    {
-        var fileEntity = _context.File.FirstOrDefault(f => f.Id == id);
-
-        if (fileEntity == null)
-        {
-            throw new Exception($"Item not found by the Id {id}");
-        }
-
-        fileEntity.Name = file.Name;
-        fileEntity.FileName = file.FileName;
-        fileEntity.FileSize = file.FileSize;
-        fileEntity.FileType = file.FileType;
-
-        _context.File.Update(fileEntity);
-        _context.SaveChanges();
-
-        return file;
+        return fileStorage;
     }
 
     public void Delete(int id)
     {
-        var fileEntity = _context.File.FirstOrDefault(f => f.Id == id);
+        var currentUserId = _authorizationService.GetCurrentUserId();
+
+        var fileEntity = _context.File.FirstOrDefault(f => f.Id == id && f.UserSocialId == currentUserId);
 
         if (fileEntity == null)
         {

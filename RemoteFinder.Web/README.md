@@ -1,3 +1,9 @@
+About the project:
+
+
+For DEVs:
+How to run project:
+
 -=Migration Create=-
 dotnet ef migrations add Initial -c "MainContext" -p "../RemoteFinder.DAL"
 
@@ -17,3 +23,7 @@ DbConnectionString=Host=10.10.10.10;Database=filemanager;Username=postgres;Passw
 
 where 10.10.10.10 should be replaced with your DB host address
 and yourpassword should be replaced with Db password
+
+
+For users:
+How to use project:

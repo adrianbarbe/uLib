@@ -1,16 +1,12 @@
-using File = RemoteFinder.Models.File;
+using RemoteFinder.Models;
 
 namespace RemoteFinder.BLL.Services.FileService;
 
 public interface IFileService
-{ 
-    List<File> GetAll();
+{
+    FileStorage Get(int id);
 
-    File Get(int id);
-
-    File Create(File file);
-
-    File Update(int id, File file);
-
+    FileStorage Create(FileStorage fileStorage);
+    
     void Delete(int id);
 }

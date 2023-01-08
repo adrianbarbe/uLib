@@ -10,8 +10,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteFinder.BLL", "RemoteF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteFinder.Models", "RemoteFinder.Models\RemoteFinder.Models.csproj", "{3CF2C6CE-3EFF-460A-88CC-685240025DB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteFinder.MVC", "RemoteFinder.MVC\RemoteFinder.MVC.csproj", "{1997B13D-2621-4FF2-8280-AB906C718227}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,9 +36,5 @@ Global
 		{3CF2C6CE-3EFF-460A-88CC-685240025DB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CF2C6CE-3EFF-460A-88CC-685240025DB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CF2C6CE-3EFF-460A-88CC-685240025DB5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1997B13D-2621-4FF2-8280-AB906C718227}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1997B13D-2621-4FF2-8280-AB906C718227}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1997B13D-2621-4FF2-8280-AB906C718227}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1997B13D-2621-4FF2-8280-AB906C718227}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

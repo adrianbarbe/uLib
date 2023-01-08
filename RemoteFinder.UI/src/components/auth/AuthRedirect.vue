@@ -13,7 +13,7 @@ export default {
 
         const code = queryParams.get('code');
         
-        AxiosService.getInstance()
+        AxiosService.getInstance({}, {}, true)
             .post(`oauth2/authorize`, {code: code})
             .then(res => {
                 this.$auth.login(res.id_token, res.refresh_token);
