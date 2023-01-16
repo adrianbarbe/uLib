@@ -1,10 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RemoteFinder.BLL.Services.CategoryService;
 using RemoteFinder.Models;
+using RemoteFinder.Models.Constants;
 
 namespace RemoteFinder.Web.Controllers;
 
 [Route("[controller]")]
+[Authorize(Policy = Policies.User)]
 public class CategoryController : Controller
 {
     private readonly ICategoryService _categoryService;
@@ -40,7 +43,7 @@ public class CategoryController : Controller
         return _categoryService.Edit(category, id);
     }
 
-    [HttpPut]
+    [HttpDelete]
     [Route("{id}")]
     public void Delete(int id)
     {

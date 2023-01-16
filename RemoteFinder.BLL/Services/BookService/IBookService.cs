@@ -1,10 +1,11 @@
 using RemoteFinder.Models;
+using RemoteFinder.Models.Shared;
 
 namespace RemoteFinder.BLL.Services.BookService;
 
 public interface IBookService
 {
-    List<BookBase> GetAll();
+    DataGridModel<BookBase> GetAll(RequestQueryModel query);
     
     BookBase GetOne(int id);
 

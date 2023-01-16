@@ -5,6 +5,7 @@ using RemoteFinder.BLL.Exceptions;
 using RemoteFinder.BLL.Services.AwsMinioClient;
 using RemoteFinder.BLL.Services.FileService;
 using RemoteFinder.Models;
+using RemoteFinder.Models.Constants;
 
 namespace RemoteFinder.Web.Controllers
 {
@@ -26,7 +27,7 @@ namespace RemoteFinder.Web.Controllers
         
         
         [HttpPost]
-        // [Authorize]
+        [Authorize(Policy = Policies.User)]
         [Route("upload/book")]
         public async Task<FileStorage> UploadBook(IFormFile file)
         {

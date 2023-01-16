@@ -11,16 +11,11 @@ export default class AxiosService {
     static instance = null;
 
     static getInstance = (postAdditionalHeaders = {}, getAdditionalHeaders = {}, withoutSnackMessage = false) => {
-        let headers = {};
-        let acessToken = localStorage.getItem('access_token');
-        if (acessToken !== undefined) {
-            headers.Authorization = `Bearer ${acessToken}`
-        }
-
+        let idToken = localStorage.getItem('id_token');
+        
         AxiosService.instance = axios.create({
             baseURL: configuration.apiEndpoint,
             validateStatus: status => status < 500,
-            headers: headers
         });
         AxiosService.instance.interceptors.request.use(config => {
             const getHeaders = {
@@ -28,12 +23,20 @@ export default class AxiosService {
                 "Pragma": "no-cache",
                 "Content-Type": "application/json"
             };
-            
+
+            if (idToken !== undefined) {
+                getHeaders["Authorization"] = `Bearer ${idToken}`;
+            }
+
             const postHeaders = {
+                "Authorization": `Bearer ${idToken}`,
                 "Accept": "application/json",
                 "Content-Type": "application/json",
             };
-            
+
+            if (idToken !== undefined) {
+                postHeaders["Authorization"] = `Bearer ${idToken}`;
+            }
             
             config.headers = deepmerge(getHeaders, getAdditionalHeaders);
             config.headers = deepmerge(postHeaders, postAdditionalHeaders);

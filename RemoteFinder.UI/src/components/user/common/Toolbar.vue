@@ -27,6 +27,10 @@
 
             <v-spacer></v-spacer>
 
+            <v-btn :to="{name: 'categories'}" class="mr-5" prepend-icon="mdi-bookmark-multiple">
+                Categories
+            </v-btn>
+            
             <logout-button/>
 
         </v-app-bar>

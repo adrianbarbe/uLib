@@ -19,7 +19,7 @@ namespace RemoteFinder.BLL.Services.AuthorizationService
             {
                 return 0;
             }
-            
+
             var subValue = _httpContextAccessor.HttpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
 
             bool parseRes = int.TryParse(subValue, out var userId);

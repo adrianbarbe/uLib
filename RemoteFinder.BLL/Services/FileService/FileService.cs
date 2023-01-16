@@ -46,6 +46,9 @@ public class FileService : IFileService
         _context.File.Add(fileEntity);
         _context.SaveChanges();
 
+        // Update the ID for the DTO
+        fileStorage.Id = fileEntity.Id;
+        
         return fileStorage;
     }
 

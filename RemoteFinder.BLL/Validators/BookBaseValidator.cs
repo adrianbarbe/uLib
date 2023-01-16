@@ -8,7 +8,7 @@ public class BookBaseValidator : AbstractValidator<BookBase>
     public BookBaseValidator()
     {
         RuleFor(b => b.Id)
-            .NotEmpty()
+            .NotNull()
             .WithMessage("Id cannot be empty");
 
         RuleFor(b => b.Name)
@@ -19,5 +19,10 @@ public class BookBaseValidator : AbstractValidator<BookBase>
             .NotEmpty()
             .WithMessage("File cannot be empty")
             .SetValidator(new FileValidator());
+        
+        RuleFor(b => b.Category)
+            .NotEmpty()
+            .WithMessage("Category cannot be empty")
+            .SetValidator(new CategoryBaseValidator());
     }
 }
