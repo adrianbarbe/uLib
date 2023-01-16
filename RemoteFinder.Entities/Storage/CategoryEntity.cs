@@ -10,4 +10,6 @@ public class CategoryEntity : BaseSoftDelete
 
     public UserSocialEntity UserSocial { get; set; }
     public int UserSocialId { get; set; }
+    
+    public ICollection<BookEntity> Books { get; set; }
 }

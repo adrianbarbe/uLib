@@ -3,15 +3,15 @@ using RemoteFinder.Models;
 
 namespace RemoteFinder.BLL.Validators;
 
-public class CategoryValidator : AbstractValidator<Category>
+public class BookBaseEditValidator : AbstractValidator<BookBase>
 {
-    public CategoryValidator()
+    public BookBaseEditValidator()
     {
-        RuleFor(c => c.Id)
+        RuleFor(b => b.Id)
             .NotNull()
             .WithMessage("Id cannot be empty");
 
-        RuleFor(c => c.Name)
+        RuleFor(b => b.Name)
             .NotEmpty()
             .WithMessage("Name cannot be empty");
     }

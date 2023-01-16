@@ -2,9 +2,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
+using RemoteFinder.BLL.Authorization;
 using RemoteFinder.BLL.Mappers;
 using RemoteFinder.BLL.Mappers.Storage;
 using RemoteFinder.BLL.Services.AuthorizationService;
@@ -19,7 +21,10 @@ using RemoteFinder.DAL.Helpers;
 using RemoteFinder.Entities.Storage;
 using RemoteFinder.Models;
 using RemoteFinder.Models.Configuration;
+using RemoteFinder.Models.Constants;
+using RemoteFinder.Web;
 using UMSA.StepTest.BLL.Configuration;
+using IAuthorizationService = RemoteFinder.BLL.Services.AuthorizationService.IAuthorizationService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +59,7 @@ builder.Services
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
     })
     .AddJwtBearer(o =>
     {
@@ -69,7 +75,7 @@ builder.Services
                 }
 
                 return Task.CompletedTask;
-            }
+            },
         };
         o.SaveToken = true;
         o.RequireHttpsMetadata = false;
@@ -91,6 +97,11 @@ builder.Services
         };
     });
 
+builder.Services.AddAuthorization(o =>
+{
+    o.AddPolicy(Policies.User, policy => policy.Requirements.Add(new RoleRequirement("user")));
+});
+
 builder.Services.AddDbContext<MainContext>(options =>
     {
         var connectionString = Environment.GetEnvironmentVariable("DbConnectionString") ??
@@ -104,6 +115,10 @@ builder.Services.AddDbContext<MainContext>(options =>
         options.UseNpgsql(connectionString);
     }
 );
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<IAuthorizationHandler, RoleHandler>();
+
 
 // Configuration
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
@@ -130,8 +145,7 @@ builder.Services.AddTransient<IValidator<Category>, CategoryValidator>();
 builder.Services.AddTransient<IValidator<BookBase>, BookBaseValidator>();
 builder.Services.AddTransient<IValidator<FileStorage>, FileValidator>();
 
-
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => { options.Filters.Add(typeof(ExceptionHandlingFilter)); });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -139,6 +153,8 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 app.UseCors(corsAllowOrigins);
+
+app.UseAuthentication();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

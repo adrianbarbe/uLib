@@ -8,7 +8,7 @@ public class BookEntity : BaseSoftDelete
     
     public string Name { get; set; }
 
-    public string PreviewImageUrl { get; set; }
+    public string? PreviewImageUrl { get; set; }
     
     public FileEntity File { get; set; }
     public int FileId { get; set; }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RemoteFinder.DAL;
@@ -11,9 +12,10 @@ using RemoteFinder.DAL;
 namespace RemoteFinder.DAL.Migrations
 {
     [DbContext(typeof(MainContext))]
-    partial class MainContextModelSnapshot : ModelSnapshot
+    [Migration("20230115143308_BookFileModified")]
+    partial class BookFileModified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,6 +152,7 @@ namespace RemoteFinder.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PreviewImageUrl")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("UserSocialId")

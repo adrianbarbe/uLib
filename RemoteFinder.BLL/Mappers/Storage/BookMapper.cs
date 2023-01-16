@@ -23,6 +23,7 @@ public class BookMapper : IMapper<BookEntity, BookBase>
             Id = source.Id,
             Name = source.Name,
             PreviewImageUrl = source.PreviewImageUrl,
+            FileName = source.File != null ? source.File.FileName : null,
             Category = source.Category != null
                 ? new Category
                 {

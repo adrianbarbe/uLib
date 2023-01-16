@@ -59,7 +59,7 @@ const saveFiles = (files) => {
     )
         .post(uploadUrl, formData)
         .then((response) => {
-            bookUploaded.value = response;
+            bookUploaded.value = response.fileName;
             emitUploaded('uploaded', response);
             loading.value = false;
         })

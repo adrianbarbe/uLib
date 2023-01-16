@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using RemoteFinder.BLL.Exceptions;
 using RemoteFinder.BLL.Extensions;
 using RemoteFinder.BLL.Mappers;
@@ -30,6 +31,7 @@ public class CategoryService : ICategoryService
         
         return _mainContext.Category
             .Where(c => c.UserSocialId == currentUserId)
+            .Include(b => b.Books)
             .Select(c => _mapperCategory.Map(c))
             .ToList();
     }
@@ -122,5 +124,6 @@ public class CategoryService : ICategoryService
         }
 
         _mainContext.Category.Remove(categoryEntity);
+        _mainContext.SaveChanges();
     }
 }
