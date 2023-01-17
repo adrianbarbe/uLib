@@ -16,7 +16,7 @@
   <p align="center">
     An awesome software tool for keeping your own books and reading in one place and accessable!
     <br />
-    <a href="https://github.com/adrianbarbe/RemoteFinder/README.md"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/adrianbarbe/RemoteFinder/blob/README.md"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://ulib.online">View Demo</a>
