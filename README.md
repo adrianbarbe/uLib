@@ -64,12 +64,6 @@ which makes it even easier to use.
 
 <img src="RemoteFinder.UI/_screenshots/ulib_1.png" alt="uLib Main Screen" height="700">
 
-To add a new book to your collection just click the main button bellow the list and you'll see this Add Book modal:
-<img src="RemoteFinder.UI/_screenshots/ulib_2.png" alt="uLib Add Book Screen" height="500">
-
-In addition to multiple categories, you could also edit and remove the books you uploaded:
-<img src="RemoteFinder.UI/_screenshots/ulib_3.png" alt="uLib Remove and edit" height="200">
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -78,6 +72,7 @@ In addition to multiple categories, you could also edit and remove the books you
 
 * [![.NET][.NET]][.NET-url]
 * [![Vue][Vue.js]][Vue-url]
+* [![PostgreSQL][psql]][psql-url]
 
 
 
@@ -93,33 +88,63 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+First of all, make sure you have installed NodeJs major version 16. 
+You could download it from the [official site](https://nodejs.org) or by using [nvm](https://github.com/nvm-sh/nvm).
+I highly recommend you to use Yarn as a package manager tool. Please install it by next command:
+```sh
+npm install --global yarn
+```
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+_There are two projects in the Git repository – UI and API. You'll find the UI project into RemoteFinder.UI directory._
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. 
    ```sh
    git clone https://github.com/adrianbarbe/RemoteFinder.git
    ```
-3. Install NPM packages
+2. Install the NPM packages by executing 
    ```sh
    yarn install
    ```
+3. Run the project for development
+   ```sh
+   yarn serve
+   ```
+
+_To run the API project, you'll need to create a .env file in RemoteFinder.Web with the following keys:_
+1. ```ASPNETCORE_ENVIRONMENT``` which could be ```Development``` or ```Production```
+2. ```AwsMinioSettings:SecretKey``` is the secret key for your S3 compatible storage. We used Minio.
+3. ```DbConnectionString``` the connection string to your PostgreSQL database engine installation.
+4. ```GoogleClientId``` is the client id for the Google oAuth2 Credentials. For creating new credentials please access [Google Developers Console](https://console.cloud.google.com/apis/credentials)
+5. ```GoogleClientSecret``` client secret generated in Google Developers Console
+6. ```GoogleRedirectUri``` redirect URI which you indicated in the Google oAuth2 application settings
+7. ```JwtSettings:SecretKey``` a hash string for JWT tokens.
+
+After creating the .env file you could start your project locally by running ```dotnet run``` command or by using the configuration profile for JetBrains Rider which is stored in the project repository.
+
+### Deployment
+In the project root you'll find a directory ```Docker_files``` that contains Docker definitions for projects and a ```docker-compose.yml``` file. You could use it for deploying the project into a Docker Swarm cluster. You could create it by installing Docker on the server and initialize a Swarm by ```doker swarm init``` command. Then, by placing the ```docker-compose.yml``` file in the desired directory, execute next command to initialize the Docker Swarm services: 
+```sh
+docker stack deploy --compose-file docker-compose.yml ulib --with-registry-auth
+```
+ Don't forget to update correspondingly 
+the environment variables in the ```docker-compose.yml``` file for ```be``` service. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
 <!-- USAGE EXAMPLES -->
 ## Usage
+As it is seen from the screenshot above. you have a virtual bookshelf where you could add you own book, which you could read from other devices.
 
+To add a new book to your collection just click the main button bellow the list and you'll see this Add Book modal:
+<img src="RemoteFinder.UI/_screenshots/ulib_2.png" alt="uLib Add Book Screen" height="500">
+
+Before adding any new book, the tool will ask you to add one or more category. You could categorize your books in different categories. As for now, they are not categorized anywere on the UI but we plan to introduce this in the nearest future.
+
+In addition to multiple categories, you could also edit and remove the books you uploaded:
+<img src="RemoteFinder.UI/_screenshots/ulib_3.png" alt="uLib Remove and edit" height="200">
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -131,8 +156,11 @@ _Below is an example of how you can instruct your audience on installing and set
 
 - [x] Add Basic functionality
 - [x] Add Categories
+- [ ] Make mobile-ready web-version
 - [ ] Add Additional File Formats (.djvu)
 - [ ] Add Premium features, like saving the number of page, taking some notes, etc...
+- [ ] Add Document parsing and keeping the state of the book (page number)...
+- [ ] Add mobile app reader
 - [ ] Multi-language Support
 
 
@@ -204,4 +232,6 @@ Project Link: [https://github.com/adrianbarbe/RemoteFinder](https://github.com/a
 [Vue-url]: https://vuejs.org/
 [.NET]: https://img.shields.io/badge/-.NET%206.0-blueviolet?style=for-the-badge
 [.NET-url]: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
+[psql]: https://img.shields.io/badge/PgSQL-PostgreSQL-blue?style=for-the-badge
+[psql-url]: https://img.shields.io/badge/PgSQL-PostgreSQL-blue?style=for-the-badge
 
