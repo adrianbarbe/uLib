@@ -53,12 +53,11 @@ public class OAuth2Service : IOAuth2Service
 
         var foundedUser = _context.UserSocial.FirstOrDefault(us => email != null && us.Email == email.Value);
 
-        var generatedIdToken = GenerateJwtToken(foundedUser);
-        
-        token.IdToken = generatedIdToken;
-        
         if (foundedUser != null)
         {
+            // If we found user generate token immediately
+            token.IdToken = GenerateJwtToken(foundedUser);
+            
             return token;
         }
 
@@ -80,7 +79,10 @@ public class OAuth2Service : IOAuth2Service
         };
         _context.UserSocial.Add(userEntity);
         _context.SaveChanges();
-
+        
+        // Generate token after creating user
+        token.IdToken = GenerateJwtToken(userEntity);
+        
         return token;
     }
 
