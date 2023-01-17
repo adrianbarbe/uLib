@@ -59,10 +59,16 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+This is a piece of software which you could use to store your books and to make them available from multiple devices. It uses Google oAuth2 authentication
+which makes it even easier to use.
 
-[![uLib Main Screen][product-screenshot]](https://ulib.online)
+<img src="RemoteFinder.UI/_screenshots/ulib_1.png" alt="uLib Main Screen" height="700">
 
+To add a new book to your collection just click the main button bellow the list and you'll see this Add Book modal:
+<img src="RemoteFinder.UI/_screenshots/ulib_2.png" alt="uLib Add Book Screen" height="500">
 
+In addition to multiple categories, you could also edit and remove the books you uploaded:
+<img src="RemoteFinder.UI/_screenshots/ulib_3.png" alt="uLib Remove and edit" height="200">
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -157,7 +163,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the GNU GPL License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -192,7 +198,7 @@ Project Link: [https://github.com/adrianbarbe/RemoteFinder](https://github.com/a
 [license-url]: https://github.com/adrianbarbe/RemoteFinder/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/adryanbarbe
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: RemoteFinder.UI/_screenshots/ulib_1.png
 
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
 [Vue-url]: https://vuejs.org/
