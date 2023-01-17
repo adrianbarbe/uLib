@@ -7,7 +7,7 @@
                 <span class="ml-2">Sign Up by Google</span>
             </v-btn>
 
-            <div class="mt-10 mb-2">By signing up or signing in you're agree with our <a href="#">terms and conditions</a></div>
+            <div class="mt-10 mb-2">By signing up or signing in you're agree with our <router-link :to="{name: 'terms-and-conditions'}">terms and conditions</router-link></div>
         </div>
     </v-card>
 </template>

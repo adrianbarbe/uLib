@@ -26,7 +26,7 @@
                 </div>
                 <div v-if="!categories.length && !loading" class="text-subtitle-1 mt-5 mb-5">
                     Before starting, please
-                    <router-link to="/about">add a book category</router-link>
+                    <router-link :to="{name: 'categories'}">add a book category</router-link>
                 </div>
             </v-card-text>
             <v-card-actions v-if="categories.length > 0">

@@ -7,6 +7,7 @@ import AuthRedirect from "@/components/auth/AuthRedirect";
 import routeGuard from "@/routeGuards/routeGuard";
 import DashboardList from "@/components/dashboard/book-list/DashboardList";
 import CategoriesList from "@/components/dashboard/categories-list/CategoriesList";
+import TermsAndConditions from "@/components/auth/TermsAndConditions.vue";
 
 const createRoutes = (app) => [
     {
@@ -31,6 +32,11 @@ const createRoutes = (app) => [
         path: '/auth',
         component: AuthRootView,
         children: [
+            {
+                path: "terms-and-conditions",
+                name: "terms-and-conditions",
+                component: TermsAndConditions,
+            },
             {
                 path: "sign-up",
                 name: "sign-up",
