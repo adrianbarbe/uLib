@@ -188,7 +188,7 @@ Project Link: [https://github.com/adrianbarbe/RemoteFinder](https://github.com/a
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/badge/GNU%20GPL-GNU%20GPL-green?style=for-the-badge
 [license-url]: https://github.com/adrianbarbe/RemoteFinder/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/adryanbarbe
@@ -196,6 +196,6 @@ Project Link: [https://github.com/adrianbarbe/RemoteFinder](https://github.com/a
 
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
 [Vue-url]: https://vuejs.org/
-[.NET]: https://img.shields.io/badge/-.NET%206.0-blueviolet
+[.NET]: https://img.shields.io/badge/-.NET%206.0-blueviolet?style=for-the-badge
 [.NET-url]: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
 
