@@ -119,7 +119,7 @@ _To run the API project, you'll need to create a .env file in RemoteFinder.Web w
 4. ```GoogleClientId``` is the client id for the Google oAuth2 Credentials. For creating new credentials please access [Google Developers Console](https://console.cloud.google.com/apis/credentials)
 5. ```GoogleClientSecret``` client secret generated in Google Developers Console
 6. ```GoogleRedirectUri``` redirect URI which you indicated in the Google oAuth2 application settings
-7. ```JwtSettings:SecretKey``` a hash string for JWT tokens.
+7. ```JwtSettings:SecretKey``` and ```JwtSecretKey``` – a hash string for JWT tokens.
 
 After creating the .env file you could start your project locally by running ```dotnet run``` command or by using the configuration profile for JetBrains Rider which is stored in the project repository.
 
