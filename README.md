@@ -11,7 +11,7 @@
     <img src="RemoteFinder.UI/src/assets/ulib_logo.png" alt="uLib" height="80">
   </a>
 
-  <h3 align="center">uLib App</h3>
+  <h3 align="center">uLib App – your e-library</h3>
 
   <p align="center">
     An awesome software tool for keeping your own books and reading in one place and accessable!
