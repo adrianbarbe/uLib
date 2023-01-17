@@ -16,10 +16,10 @@
   <p align="center">
     An awesome software tool for keeping your own books and reading in one place and accessable!
     <br />
-    <a href="https://github.com/adrianbarbe/RemoteFinder/blob/README.md"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/adrianbarbe/RemoteFinder/blob/main/README.md"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://ulib.online">View Demo</a>
+    <a href="https://ulib.online"><strong>View Demo</strong></a>
     ·
     <a href="https://github.com/adrianbarbe/RemoteFinder/issues">Report Bug</a>
     ·
@@ -136,6 +136,9 @@ the environment variables in the ```docker-compose.yml``` file for ```be``` serv
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+<a href="https://ulib.online"><strong>View the Demo Here  »»»</strong></a>
+
+
 As it is seen from the screenshot above. you have a virtual bookshelf where you could add you own book, which you could read from other devices.
 
 To add a new book to your collection just click the main button bellow the list and you'll see this Add Book modal:
