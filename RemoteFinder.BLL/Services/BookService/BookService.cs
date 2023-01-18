@@ -8,6 +8,7 @@ using RemoteFinder.DAL;
 using RemoteFinder.Entities.Storage;
 using RemoteFinder.Models;
 using RemoteFinder.Models.Shared;
+using Serilog;
 
 namespace RemoteFinder.BLL.Services.BookService;
 
@@ -34,6 +35,7 @@ public class BookService : IBookService
 
         var itemsQuery = _mainContext.Book
             .Where(b => b.UserSocialId == currentUserId)
+            .OrderBy(b => b.Id)
             .AsQueryable();
         
         var totalCount = itemsQuery.Count();
@@ -72,13 +74,16 @@ public class BookService : IBookService
 
     public BookBase Save(BookBase book)
     {
+        var currentUserId = _authorizationService.GetCurrentUserId();
+
         if (book == null)
         {
+            // Added for testing purpose
+            Log.ForContext<BookService>().Warning("Book form is empty, userId {CurrentUserId}", currentUserId);
+            
             throw new ValidationException("Book form cannot be empty");
         }
         
-        var currentUserId = _authorizationService.GetCurrentUserId();
-
         var validator = new BookBaseValidator();
         var validationResult = validator.Validate(book);
 
@@ -123,6 +128,8 @@ public class BookService : IBookService
 
         if (bookEntity == null)
         {
+            Log.ForContext<BookService>().Warning("Book is not found on edit, userId {CurrentUserId}", currentUserId);
+
             throw new NotFoundException("Book is not found");
         }
 
@@ -144,6 +151,8 @@ public class BookService : IBookService
 
         if (bookEntity == null)
         {
+            Log.ForContext<BookService>().Warning("Book is not found on delete, userId {CurrentUserId}", currentUserId);
+
             throw new NotFoundException("Book is not found");
         }
 

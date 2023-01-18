@@ -7,6 +7,7 @@ using RemoteFinder.BLL.Validators;
 using RemoteFinder.DAL;
 using RemoteFinder.Entities.Storage;
 using RemoteFinder.Models;
+using Serilog;
 
 namespace RemoteFinder.BLL.Services.CategoryService;
 
@@ -52,12 +53,13 @@ public class CategoryService : ICategoryService
 
     public Category Save(Category category)
     {
+        var currentUserId = _authorizationService.GetCurrentUserId();
+
         if (category == null)
         {
-            throw new ValidationException("Category model cannot be empty");
+            // For tesing purpose
+            Log.ForContext<CategoryService>().Warning("Category model cannot be empty, userId {CurrentUserId}", currentUserId);
         }
-        
-        var currentUserId = _authorizationService.GetCurrentUserId();
 
         var validator = new CategoryValidator();
         var validationResult = validator.Validate(category);
@@ -81,8 +83,11 @@ public class CategoryService : ICategoryService
 
     public Category Edit(Category category, int id)
     {
+        var currentUserId = _authorizationService.GetCurrentUserId();
+
         if (category == null)
         {
+            Log.ForContext<CategoryService>().Warning("Category model cannot be empty, userId {CurrentUserId}", currentUserId);
             throw new ValidationException("Category model cannot be empty");
         }
 
@@ -96,8 +101,6 @@ public class CategoryService : ICategoryService
             throw new ValidationFormException(validationErrors);
         }
         
-        var currentUserId = _authorizationService.GetCurrentUserId();
-
         var categoryEntity = _mainContext.Category.FirstOrDefault(c => c.Id == id && c.UserSocialId == currentUserId);
 
         if (categoryEntity == null)
@@ -120,6 +123,8 @@ public class CategoryService : ICategoryService
 
         if (categoryEntity == null)
         {
+            Log.ForContext<CategoryService>().Warning("Category is not found on remove, userId {CurrentUserId}", currentUserId);
+
             throw new NotFoundException("Category is not found");
         }
 

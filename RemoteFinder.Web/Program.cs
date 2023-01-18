@@ -23,6 +23,9 @@ using RemoteFinder.Models;
 using RemoteFinder.Models.Configuration;
 using RemoteFinder.Models.Constants;
 using RemoteFinder.Web;
+using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
+using TelegramSink;
 using UMSA.StepTest.BLL.Configuration;
 using IAuthorizationService = RemoteFinder.BLL.Services.AuthorizationService.IAuthorizationService;
 
@@ -52,6 +55,18 @@ builder.Configuration
     .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", false, true)
     .AddEnvironmentVariables();
 
+
+builder.Host
+    .UseSerilog((ctx, loggerConfiguration) => 
+        loggerConfiguration
+            .MinimumLevel.Information()
+            .WriteTo.Console(theme: AnsiConsoleTheme.Literate)
+            .MinimumLevel.Warning()
+            .WriteTo.TeleSink(
+                telegramApiKey: builder.Configuration["SerilogTelegram:ApiKey"],
+                telegramChatId: builder.Configuration["SerilogTelegram:ChatId"]
+            )
+    );
 
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 builder.Services

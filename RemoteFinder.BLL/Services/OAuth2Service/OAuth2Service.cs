@@ -8,6 +8,7 @@ using RemoteFinder.Entities.Authentication;
 using RemoteFinder.Entities.Constants;
 using RemoteFinder.Models;
 using RestSharp;
+using Serilog;
 using UMSA.StepTest.BLL.Configuration;
 
 namespace RemoteFinder.BLL.Services.OAuth2Service;
@@ -79,6 +80,9 @@ public class OAuth2Service : IOAuth2Service
         };
         _context.UserSocial.Add(userEntity);
         _context.SaveChanges();
+        
+        Log.ForContext<OAuth2Service>().Warning("New user was created! {UserEntityEmail}", userEntity.Email);
+
         
         // Generate token after creating user
         token.IdToken = GenerateJwtToken(userEntity);
