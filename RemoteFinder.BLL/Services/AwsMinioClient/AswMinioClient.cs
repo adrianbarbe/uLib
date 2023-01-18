@@ -9,6 +9,7 @@ using RemoteFinder.BLL.Exceptions;
 using RemoteFinder.BLL.Extensions;
 using RemoteFinder.BLL.Helpers;
 using RemoteFinder.Models.Configuration;
+using Serilog;
 
 namespace RemoteFinder.BLL.Services.AwsMinioClient
 {
@@ -88,10 +89,14 @@ namespace RemoteFinder.BLL.Services.AwsMinioClient
             }
             catch (AmazonS3Exception exception)
             {
+                Log.ForContext<AswMinioClient>().Error("Cannot upload the file. Exception: {ExceptionMessage}", exception.Message);
+
                 throw new UploadFileException($"Error when uploading file. Exception: {exception.Message}");
             }
             catch (Exception ex)
             {
+                Log.ForContext<AswMinioClient>().Error("Cannot upload the file. Unknown exception: {ExMessage}", ex.Message);
+
                 throw new UploadFileException($"Error when uploading file. Exception: {ex.Message}");
             }
 
@@ -125,11 +130,15 @@ namespace RemoteFinder.BLL.Services.AwsMinioClient
             }
             catch (AmazonS3Exception exception)
             {
-                throw new UploadFileException($"Error when uploading file. Expection: {exception.Message}");
+                Log.ForContext<AswMinioClient>().Error("Cannot getting the file. Exception: {ExceptionMessage}", exception.Message);
+
+                throw new UploadFileException($"Error when getting file. Exception: {exception.Message}");
             }
             catch (Exception ex)
             {
-                throw new UploadFileException($"Error when uploading file. Expection: {ex.Message}");
+                Log.ForContext<AswMinioClient>().Error("Cannot getting the file. Unknown exception: {ExMessage}", ex.Message);
+
+                throw new UploadFileException($"Error when getting file. Exception: {ex.Message}");
             }
         }
 
@@ -154,11 +163,15 @@ namespace RemoteFinder.BLL.Services.AwsMinioClient
             }
             catch (AmazonS3Exception exception)
             {
-                throw new UploadFileException($"Error when uploading file. Expection: {exception.Message}");
+                Log.ForContext<AswMinioClient>().Error("Cannot deleting the file. Exception: {ExceptionMessage}", exception.Message);
+
+                throw new UploadFileException($"Error when deleting file. Exception: {exception.Message}");
             }
             catch (Exception ex)
             {
-                throw new UploadFileException($"Error when uploading file. Expection: {ex.Message}");
+                Log.ForContext<AswMinioClient>().Error("Cannot deleting the file. Unknown exception: {ExMessage}", ex.Message);
+
+                throw new UploadFileException($"Error when uploading file. Exception: {ex.Message}");
             }
         }
 

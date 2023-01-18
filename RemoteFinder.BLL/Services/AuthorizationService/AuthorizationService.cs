@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace RemoteFinder.BLL.Services.AuthorizationService
 {
@@ -26,6 +28,8 @@ namespace RemoteFinder.BLL.Services.AuthorizationService
 
             if (!parseRes)
             {
+                Log.ForContext<AuthorizationService>().Error("Cannot parse user Id from {SubValue}", subValue);
+                
                 throw new ValidationException("User id is not an integer");
             }
 
