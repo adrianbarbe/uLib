@@ -1,6 +1,4 @@
-using System.IO;
-
-namespace ePlato.CoreApp.BLL.AwsMinioClient
+namespace RemoteFinder.BLL.Services.AwsMinioClient
 {
     public class AwsMinioGetFileResponse
     {

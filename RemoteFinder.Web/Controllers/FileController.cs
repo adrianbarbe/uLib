@@ -1,4 +1,3 @@
-using ePlato.CoreApp.BLL.AwsMinioClient;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RemoteFinder.BLL.Exceptions;
