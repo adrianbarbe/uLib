@@ -78,7 +78,154 @@ which makes it even easier to use.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Project design
 
+This project is build as a Client-API application with a client developed using the VueJs 3 front-end framework and API developed by using .NET 6 C#.
+We used Entity Framework as main ORM and the chosen approach was Code First. This choice is dictated by the usability and maintainability of this approach. It creates uniform namings across the DB, there's no need to write down SQL code and maintain SQL code base.
+
+The project is a solution that consists of 5 .NEt projects that corresponds to the architectural layers.
+
+For this project we have chosen 3-tier / Layer architecure. It comprise of 3-tiers, Presentation Layer, Business Logic Layer, and Data Access Layer. Each Layer will have its own namespace, assembly and project (classes and folders)in the solution. 
+
+We considered this architecture becuase there are some benefits of N-tier Architecture:
+* Reuse of the code
+* Improve of the Maintainability
+* Looser Coupling
+
+In our project we have next projects:
+* RemoteFinder.DAL - Data access layer, where the entity configurations, migrations and EF Context is saved.
+* RemoteFinder.Entities – a class project where the Entities are grouped. They are suffixed by "*Entity"
+* RemoteFinder.Models - a class project where the Data Transfer Objects (DTO) are located
+* RemoteFinder.BLL - Business logic layer, a class project where the services and other business logic (authentication, 3rd party API integration, validation) is stored.
+* RemoteFinder.Web – API project, presentation layer. A set of Controllers with exposed API endpoints, where the routing, authentication guards are implemented.
+
+## Implementation
+
+Some notable libraries (NuGets) used in our application are:
+* AWSSDK.S3 – for integration with AWS S3 compatible data storage service like MinIO
+* FluentValidation – for DTO validation
+* RestSharp - for sending API requests during the validation of oAuth2 code
+* Serilog and Serilog.Sinks.Console and Serilog.Sinks.Telegram – for collecting and sending logs to console, and warnings and up – to Telegram.
+* JWt - for generating user-facing JWT
+
+#### Business layer
+
+Business layer contains logic for Authentication, Custom Exceptions, Extension methods, Helpers, Mappes (between Entities and DTOs and vice-versa) and the most important – Services. 
+
+Validators are crated based on FluentValidation. 
+
+Among services, there are CRUD Services for Books, Category, File and UserSocial. UserSocial is an entity used for storing oAuth2 users.
+There is also AwsMinioClient service that is used for uploading files to MinIO
+
+Some notable places in BLL are:
+* use of ```IHttpContextAccessor``` in BLL for getting the current user.
+```c#
+var subValue = _httpContextAccessor.HttpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            bool parseRes = int.TryParse(subValue, out var userId);
+
+            if (!parseRes)
+            {
+                Log.ForContext<AuthorizationService>().Error("Cannot parse user Id from {SubValue}", subValue);
+                
+                throw new ValidationException("User id is not an integer");
+            }
+
+            return userId;
+        }
+```
+
+* upload to AWS S3 compatible storage file logic 
+```c#
+var fileExtension = Path.GetExtension(fileNameWithExt);
+            var fileMimeType = MimeTypes.GetMimeType(fileExtension);
+            var fileNameWithoutExt = fileNameWithExt.Replace(fileExtension, string.Empty);
+
+            var fileNameWithoutExtTranslited = TransliterationHelper.Transliterate(fileNameWithoutExt.RemoveWhitespace());
+
+            var uniqueFilename = $"{GetCurrentUnixTimeStamp()}__{fileNameWithoutExtTranslited.ToLower()}{fileExtension}";
+
+            try
+            {
+                if (!await AmazonS3Util.DoesS3BucketExistV2Async(_client, bucketName))
+                {
+                    var bucket = await _client.PutBucketAsync(bucketName);
+
+                    if (bucket.HttpStatusCode != HttpStatusCode.OK)
+                    {
+                        throw new UploadFileException("Error when creating bucket");
+                    }
+                }
+
+                var request = new PutObjectRequest
+                {
+                    BucketName = bucketName,
+                    Key = uniqueFilename,
+                    ContentType = fileMimeType,
+                    InputStream = fileToUpload,
+                    CannedACL = S3CannedACL.AuthenticatedRead
+                };
+
+                var cancellationToken = new CancellationToken();
+
+                var response = await _client.PutObjectAsync(request, cancellationToken);
+
+                if (response.HttpStatusCode != HttpStatusCode.OK)
+                {
+                    throw new UploadFileException("Error when uploading file");
+                }
+            }
+```
+
+* pagination for the books
+```c#
+        var currentUserId = _authorizationService.GetCurrentUserId();
+        
+        var skip = (query.PageNumber - 1) * query.ItemsPerPage;
+
+        var itemsQuery = _mainContext.Book
+            .Where(b => b.UserSocialId == currentUserId)
+            .OrderBy(b => b.Id)
+            .AsQueryable();
+        
+        var totalCount = itemsQuery.Count();
+        
+            var items = itemsQuery
+            .Include(b => b.File)
+            .Include(b => b.Category)
+            .Skip(skip)
+            .Take(query.ItemsPerPage)
+            .Select(b => _mapperBook.Map(b))
+            .ToList();
+
+        return new DataGridModel<BookBase>
+        {
+            Total = totalCount,
+            Items = items,
+        };
+```
+
+* JWT generation
+
+```c#
+var jwtSecretKey = Environment.GetEnvironmentVariable("JwtSecretKey") ?? _jwtSettings.SecretKey;
+
+        var tokenBuilder = new JwtBuilder()
+            .WithAlgorithm(new HMACSHA256Algorithm())
+            .WithSecret(jwtSecretKey)
+            .AddClaim(JwtRegisteredClaimNames.Exp,
+                DateTimeOffset.UtcNow.AddMinutes(_jwtSettings.ExpirationMinutes).ToUnixTimeSeconds())
+            .AddClaim(JwtRegisteredClaimNames.Iss, _jwtSettings.Issuer)
+            .AddClaim(JwtRegisteredClaimNames.Aud, _jwtSettings.Audience)
+            .AddClaim(JwtRegisteredClaimNames.Sub, userEntity.Id)
+            .AddClaim(JwtRegisteredClaimNames.UniqueName, userEntity.Username)
+            .AddClaim(JwtRegisteredClaimNames.Email, userEntity.Email)
+            .AddClaim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.AddMilliseconds(1).ToUnixTimeSeconds());
+        
+        tokenBuilder.AddClaim("role", roles);
+            
+        return tokenBuilder.Encode();
+```
 
 <!-- GETTING STARTED -->
 ## Getting Started
