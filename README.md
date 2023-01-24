@@ -40,6 +40,15 @@
       </ul>
     </li>
     <li>
+      <a href="#project-design">Project Design</a>
+    </li>
+    <li>
+      <a href="#implementation">Implementation</a>
+    </li>
+    <li>
+      <a href="#deployment">Deployment</a>
+    </li>
+    <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
@@ -226,6 +235,12 @@ var jwtSecretKey = Environment.GetEnvironmentVariable("JwtSecretKey") ?? _jwtSet
             
         return tokenBuilder.Encode();
 ```
+
+## Deployment
+
+For the project deployment we used Docker containers. In ```Docker_files``` you'll find configurations for the API and UI. 
+
+On the server the project is running by the means of Docker Swarm, using docker-composer.yml. As a server we used Ubuntu Server 22.04, and ```nginx``` as a reverse-proxy server.
 
 <!-- GETTING STARTED -->
 ## Getting Started
